@@ -253,14 +253,14 @@
                 success: function (data) {
                     videoData = data;
                     $loader.hide();
-                    updateCarousel(0);
+                    popularCarousel(0);
                 },
                 error: function () {
                     $loader.hide();
                     $carouselInner.html('<p class="text-center">Failed to load videos. Please try again later.</p>');
                 }
             });
-            function updateCarousel(startIndex) {
+            function popularCarousel(startIndex) {
                 $carouselInner.empty();
                 for (let i = 0; i < videosPerSlide; i++) {
                     const index = (startIndex + i) % videoData.length;
@@ -301,11 +301,11 @@
             let currentIndex = 0;
             $('#arrow_black_right').on('click', function () {
                 currentIndex = (currentIndex + 1) % videoData.length;
-                updateCarousel(currentIndex);
+                popularCarousel(currentIndex);
             });
             $('#arrow_black_left').on('click', function () {
                 currentIndex = (currentIndex - 1 + videoData.length) % videoData.length;
-                updateCarousel(currentIndex);
+                popularCarousel(currentIndex);
             });
         });
     </script>
