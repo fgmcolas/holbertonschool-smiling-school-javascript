@@ -264,28 +264,35 @@
                 $carouselInner.empty();
                 for (let i = 0; i < videosPerSlide; i++) {
                     const index = (startIndex + i) % videoData.length;
-                    const video = videoData[index]; const videoCard = ` <div class="col-12 col-md-6 col-lg-3">
-                        <div class="card">
-                            <img src="${video.thumb_url}" class="card-img-top" alt="Video thumbnail" />
-                            <div class="card-img-overlay text-center">
-                                <img src="images/play.png" alt="Play" width="64px" class="align-self-center play-overlay" />
-                            </div>
-                            <div class="card-body">
-                                <h5 class="card-title font-weight-bold">${video.title}</h5>
-                                <p class="card-text text-muted">${video["sub-title"]}</p>
-                                <div class="creator d-flex align-items-center">
-                                    <img src="${video.author_pic_url}" alt="Creator of Video" width="30px" class="rounded-circle" />
-                                    <h6 class="pl-3 m-0 main-color">${video.author}</h6>
-                                </div>
-                                <div class="info pt-3 d-flex justify-content-between">
-                                    <div class="rating">
-                                        ${'<img src="images/star_on.png" width="15px" alt="star on" />'.repeat(video.star)}
-                                        ${'<img src="images/star_off.png" width="15px" alt="star off" />'.repeat(5 - video.star)}
+                    const video = videoData[index];
+                    const isActive = i === 0 ? 'active' : '';
+                    const videoCard = `
+                        <div class="carousel-item ${isActive}">
+                            <div class="row">
+                                <div class="col-12 col-md-6 col-lg-3">
+                                    <div class="card">
+                                        <img src="${video.thumb_url}" class="card-img-top" alt="Video thumbnail" />
+                                        <div class="card-img-overlay text-center">
+                                            <img src="images/play.png" alt="Play" width="64px" class="align-self-center play-overlay" />
+                                        </div>
+                                        <div class="card-body">
+                                            <h5 class="card-title font-weight-bold">${video.title}</h5>
+                                            <p class="card-text text-muted">${video["sub-title"]}</p>
+                                            <div class="creator d-flex align-items-center">
+                                                <img src="${video.author_pic_url}" alt="Creator of Video" width="30px" class="rounded-circle" />
+                                                <h6 class="pl-3 m-0 main-color">${video.author}</h6>
+                                            </div>
+                                            <div class="info pt-3 d-flex justify-content-between">
+                                                <div class="rating">
+                                                    ${'<img src="images/star_on.png" width="15px" alt="star on" />'.repeat(video.star)}
+                                                    ${'<img src="images/star_off.png" width="15px" alt="star off" />'.repeat(5 - video.star)}
+                                                </div>
+                                                <span class="main-color">${video.duration}</span>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <span class="main-color">${video.duration}</span>
                                 </div>
                             </div>
-                        </div>
                         </div>
                         `;
                     $carouselInner.append(videoCard);
