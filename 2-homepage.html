@@ -183,12 +183,12 @@
                 <div id="tutorialCarousel" class="carousel slide" data-ride="carousel">
                     <div class="carousel-inner" id="video-carousel">
                     </div>
-                    <a class="carousel-control-prev arrow-left" href="#tutorialCarousel" role="button"
+                    <a class="carousel-control-prev arrow-left" id="arrow_black_left" href="#tutorialCarousel" role="button"
                         data-slide="prev">
                         <img src="images/arrow_black_left.png" alt="Quote Previous" aria-hidden="true" />
                         <span class="sr-only">Previous</span>
                     </a>
-                    <a class="carousel-control-next arrow-right" href="#tutorialCarousel" role="button"
+                    <a class="carousel-control-next arrow-right" id="arrow_black_right" href="#tutorialCarousel" role="button"
                         data-slide="next">
                         <img src="images/arrow_black_right.png" alt="Quote Next" aria-hidden="true" />
                         <span class="sr-only">Next</span>
@@ -227,7 +227,7 @@
                                 </div>
                                 </div>
                             </div>
-                        `;
+                            `;
                         $carouselInner.append(quoteItem);
                     });
                 },
@@ -242,6 +242,8 @@
         $(document).ready(function () {
             const $loader = $('#video-loader');
             const $carouselInner = $('#video-carousel');
+            const videosPerSlide = 4;
+            let videoData = [];
             $.ajax({
                 url: 'https://smileschool-api.hbtn.info/popular-tutorials',
                 method: 'GET',
@@ -249,49 +251,54 @@
                     $loader.show();
                 },
                 success: function (data) {
-                    $carouselInner.empty();
+                    videoData = data;
                     $loader.hide();
-                    let slideContent = '<div class="carousel-item active"><div class="row">';
-                    data.forEach((video, index) => {
-                        if (index > 0 && index % 4 === 0) {
-                            slideContent += '</div></div><div class="carousel-item"><div class="row">';
-                        }
-                        const videoCard = `
-                            <div class="col-12 col-md-6 col-lg-3">
-                                <div class="card">
-                                    <img src="${video.thumb_url}" class="card-img-top" alt="Video thumbnail" />
-                                    <div class="card-img-overlay text-center">
-                                        <img src="images/play.png" alt="Play" width="64px" class="align-self-center play-overlay" />
-                                    </div>
-                                    <div class="card-body">
-                                        <h5 class="card-title font-weight-bold">${video.title}</h5>
-                                        <p class="card-text text-muted">${video["sub-title"]}</p>
-                                        <div class="creator d-flex align-items-center">
-                                            <img src="${video.author_pic_url}" alt="Creator of Video" width="30px" class="rounded-circle" />
-                                            <h6 class="pl-3 m-0 main-color">${video.author}</h6>
-                                        </div>
-                                        <div class="info pt-3 d-flex justify-content-between">
-                                            <div class="rating">
-                                                ${'<img src="images/star_on.png" width="15px" alt="star on" />'.repeat(video.star)}
-                                                ${'<img src="images/star_off.png" width="15px" alt="star off" />'.repeat(5 - video.star)}
-                                            </div>
-                                            <span class="main-color">${video.duration}</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        `;
-                        slideContent += videoCard;
-                        if (index === data.length - 1) {
-                            slideContent += '</div></div>';
-                        }
-                    });
-                    $carouselInner.append(slideContent);
+                    updateCarousel(0);
                 },
                 error: function () {
                     $loader.hide();
                     $carouselInner.html('<p class="text-center">Failed to load videos. Please try again later.</p>');
                 }
+            });
+            function updateCarousel(startIndex) {
+                $carouselInner.empty();
+                for (let i = 0; i < videosPerSlide; i++) {
+                    const index = (startIndex + i) % videoData.length;
+                    const video = videoData[index]; const videoCard = ` <div class="col-12 col-md-6 col-lg-3">
+                        <div class="card">
+                            <img src="${video.thumb_url}" class="card-img-top" alt="Video thumbnail" />
+                            <div class="card-img-overlay text-center">
+                                <img src="images/play.png" alt="Play" width="64px" class="align-self-center play-overlay" />
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title font-weight-bold">${video.title}</h5>
+                                <p class="card-text text-muted">${video["sub-title"]}</p>
+                                <div class="creator d-flex align-items-center">
+                                    <img src="${video.author_pic_url}" alt="Creator of Video" width="30px" class="rounded-circle" />
+                                    <h6 class="pl-3 m-0 main-color">${video.author}</h6>
+                                </div>
+                                <div class="info pt-3 d-flex justify-content-between">
+                                    <div class="rating">
+                                        ${'<img src="images/star_on.png" width="15px" alt="star on" />'.repeat(video.star)}
+                                        ${'<img src="images/star_off.png" width="15px" alt="star off" />'.repeat(5 - video.star)}
+                                    </div>
+                                    <span class="main-color">${video.duration}</span>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                        `;
+                    $carouselInner.append(videoCard);
+                }
+            }
+            let currentIndex = 0;
+            $('#arrow_black_right').on('click', function () {
+                currentIndex = (currentIndex + 1) % videoData.length;
+                updateCarousel(currentIndex);
+            });
+            $('#arrow_black_left').on('click', function () {
+                currentIndex = (currentIndex - 1 + videoData.length) % videoData.length;
+                updateCarousel(currentIndex);
             });
         });
     </script>
