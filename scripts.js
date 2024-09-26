@@ -9,9 +9,9 @@ $(document).ready(function () {
                     <div class="col-sm-8 py-2">
                         <p class="mt-5 mt-sm-0 pl-md-2">${text}</p>
                         <p class="font-weight-bold mb-n1 mt-5">${name}</p>
-                        <p><em>${title}</em></p> 
+                        <p><em>${title}</em></p>
                     </div>
-                </div>  
+                </div>
             </div>
         `);
     }
@@ -38,7 +38,7 @@ $(document).ready(function () {
                             <p class="font-weight-bold">${duration}</p>
                         </div>
                     </div>
-                </div>      
+                </div>
             </div>
         `);
     }
@@ -66,8 +66,8 @@ $(document).ready(function () {
                                 <p class="font-weight-bold">${duration}</p>
                             </div>
                         </div>
-                    </div> 
-                </div>   
+                    </div>
+                </div>
             </div>
         `);
     }
